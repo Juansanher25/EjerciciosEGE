@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller Avanzado: Ecuación General de Energía</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --paper-color: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #0284c7;
+            --primary-light: #e0f2fe;
+            --border-color: #cbd5e1;
+            --accent-danger: #e11d48;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .worksheet-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: var(--paper-color);
+            padding: 50px 60px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border-top: 8px solid var(--primary);
+        }
+
+        /* Cabecera del Taller */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        .header-title h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .badge-advanced {
+            display: inline-block;
+            background-color: var(--accent-danger);
+            color: white;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 700;
+            vertical-align: middle;
+            margin-left: 10px;
+        }
+
+        .header-title p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .student-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 350px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            margin-right: 10px;
+            color: var(--text-main);
+            white-space: nowrap;
+        }
+
+        input.input-line {
+            border: none;
+            border-bottom: 1px solid var(--text-main);
+            background: transparent;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            color: var(--text-main);
+            flex-grow: 1;
+            padding-bottom: 2px;
+        }
+
+        input.input-line:focus {
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* Instrucciones */
+        .instructions {
+            background-color: var(--primary-light);
+            padding: 20px 25px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .instructions h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions p {
+            color: var(--text-main);
+            font-size: 1rem;
+        }
+
+        /* Contenedor de Ejercicios */
+        .exercise {
+            margin-bottom: 60px;
+            page-break-inside: avoid;
+        }
+
+        .exercise-header {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-number {
+            background-color: var(--primary);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .exercise-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .exercise-body {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 30px;
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+        }
+
+        .problem-statement p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        .data-list {
+            list-style: none;
+            margin-top: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .data-list li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+        }
+
+        .data-list math {
+            font-size: 1.15rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .schematic-box {
+            background-color: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            height: 250px;
+        }
+
+        .schematic-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        .schematic-caption {
+            background: var(--text-main);
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        textarea.answer-space {
+            width: 100%;
+            margin-top: 25px;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            height: 280px;
+            padding: 15px 20px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            resize: vertical;
+            background-color: #fafaf9;
+            color: var(--text-main);
+        }
+
+        textarea.answer-space:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #ffffff;
+        }
+
+        textarea.answer-space::placeholder {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        /* Banner de Guardado PDF */
+        .pdf-banner {
+            background-color: #fffbeb;
+            color: #d97706;
+            padding: 15px 20px;
+            border-radius: 8px;
+            border: 1px solid #fcd34d;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .worksheet-container { padding: 30px 20px; }
+            .header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .student-info { width: 100%; }
+            .exercise-body { grid-template-columns: 1fr; }
+            .schematic-box { height: 200px; }
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .worksheet-container { box-shadow: none; border-top: none; padding: 0; }
+            textarea.answer-space { height: auto; min-height: 200px; border: 1px solid black; background: white; }
+            input.input-line { border-bottom: 1px solid black; }
+            .instructions { border: 1px solid black; }
+            .pdf-banner { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="worksheet-container">
+        <!-- Banner para estudiantes (No se imprime) -->
+        <div class="pdf-banner">
+            <i class="fa-solid fa-file-pdf" style="font-size: 1.5rem;"></i>
+            <span><strong>Para entregar:</strong> Llena tus datos y el desarrollo de los ejercicios directamente en los recuadros. Cuando termines, presiona <strong>Ctrl + P</strong> (o Cmd + P), selecciona <strong>"Guardar como PDF"</strong> y envíalo a tu profesor.</span>
+        </div>
+
+        <!-- Encabezado -->
+        <header class="header">
+            <div class="header-title">
+                <h1>Taller Práctico <span class="badge-advanced">Avanzado</span></h1>
+                <p>Ecuación General de Energía - Mecánica de Fluidos</p>
+                <p style="font-size: 0.9rem; margin-top: 5px;"><i class="fa-solid fa-book"></i> Cap. 8 - Autor: Juan A. Sandoval H.</p>
+            </div>
+            <div class="student-info">
+                <div class="input-group">
+                    <label>Estudiante:</label>
+                    <input type="text" class="input-line" placeholder="Escribe tu nombre completo">
+                </div>
+                <div class="input-group">
+                    <label>Fecha:</label>
+                    <input type="date" class="input-line">
+                </div>
+                <div class="input-group">
+                    <label>Calificación:</label>
+                    <input type="text" class="input-line" style="width: 50px; flex-grow: 0;" disabled>
+                </div>
+            </div>
+        </header>
+
+        <!-- Instrucciones -->
+        <div class="instructions">
+            <h3><i class="fa-solid fa-circle-info"></i> Instrucciones</h3>
+            <p>Este taller evalúa situaciones complejas de transferencia de energía. No es necesario el cálculo de coeficientes de fricción, ya que las pérdidas (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>h</mi><mi>L</mi></msub></math>) han sido estimadas previamente en cada tramo. Preste especial atención a las áreas de sección transversal, la gravedad específica del fluido y defina estratégicamente sus puntos (1 y 2) para resolver las incógnitas.</p>
+        </div>
+
+        <!-- Ejercicio 1 -->
+        <section class="exercise">
+            <div class="exercise-header">
+                <div class="exercise-number">1</div>
+                <h2 class="exercise-title">Análisis de un Sifón (Análisis por Tramos)</h2>
+            </div>
+            <div class="exercise-body">
+                <div class="problem-statement">
+                    <p>Un sifón extrae agua a 20°C desde un gran depósito abierto a la atmósfera. El tubo del sifón tiene un diámetro interno constante de <strong>50 mm</strong> en todo su recorrido. La salida del sifón (Punto C) descarga libremente a la atmósfera y está a <strong>4.0 m</strong> por debajo de la superficie libre del agua en el depósito (Punto A).</p>
+                    <p>El punto más alto de la tubería (Punto B) se encuentra <strong>2.5 m</strong> por encima de la superficie del depósito. Las pérdidas de energía (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>h</mi><mi>L</mi></msub></math>) se dividen así: desde la entrada hasta la cima son <strong>0.8 m</strong>, y desde la cima hasta la salida son <strong>1.2 m</strong>.</p>
+                    <p><strong>Calcule:</strong> (a) El caudal volumétrico del sistema. (b) La presión en la cima del sifón (Punto B).</p>
+                    
+                    <ul class="data-list">
+                        <li><i class="fa-solid fa-compress"></i> <strong>Diámetro de tubería:</strong> 50 mm constante</li>
+                        <li><i class="fa-solid fa-arrows-up-down"></i> <strong>Pérdida A -> C (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>h</mi><mi>L</mi></msub></math> total):</strong> 2.0 m</li>
+                        <li><i class="fa-solid fa-arrow-up-right-dots"></i> <strong>Pérdida A -> B (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>h</mi><mi>L</mi></msub></math> tramo 1):</strong> 0.8 m</li>
+                    </ul>
+                </div>
+                <div class="schematic-box">
+                    <img src="https://github.com/Juansanher25/EjerciciosEGE/blob/main/Ejercicio%201%20de%20recuperaci%C3%B3n%20EGE.jpg?raw=true" alt="Esquema Ejercicio 1 - Sifón">
+                    <div class="schematic-caption">Esquema Ejercicio 1 (Sifón)</div>
+                </div>
+            </div>
+            <textarea class="answer-space" placeholder="Espacio para el desarrollo y cálculos...&#10;&#10;Escribe tu respuesta paso a paso aquí."></textarea>
+        </section>
+
+        <!-- Ejercicio 2 -->
+        <section class="exercise">
+            <div class="exercise-header">
+                <div class="exercise-number">2</div>
+                <h2 class="exercise-title">Sistema de Bombeo (Diámetros Diferentes)</h2>
+            </div>
+            <div class="exercise-body">
+                <div class="problem-statement">
+                    <p>Una bomba hidráulica transfiere agua y se encuentra conectada entre dos tuberías de diámetros desiguales. La tubería de succión tiene <strong>150 mm</strong> de diámetro y cuenta con un manómetro que registra una presión de vacío de <strong>-25 kPa</strong>. La tubería de descarga tiene <strong>75 mm</strong> de diámetro y su manómetro lee <strong>350 kPa</strong>.</p>
+                    <p>El manómetro de descarga se encuentra instalado exactamente <strong>1.2 m</strong> por encima del manómetro de succión. Si el caudal medido en el sistema es de <strong>0.03 m³/s</strong> y las pérdidas de energía entre las tomas de los dos manómetros son de <strong>1.5 m</strong>, determine la <strong>potencia útil</strong> (en kW) que la bomba transfiere al fluido.</p>
+
+                    <ul class="data-list">
+                        <li><i class="fa-solid fa-gauge"></i> <strong>Presión Succión (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>p</mi><mn>1</mn></msub></math>):</strong> -25 kPa</li>
+                        <li><i class="fa-solid fa-gauge-high"></i> <strong>Presión Descarga (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>p</mi><mn>2</mn></msub></math>):</strong> 350 kPa</li>
+                        <li><i class="fa-solid fa-bolt"></i> <strong>Caudal (<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi></math>):</strong> 0.03 m³/s</li>
+                    </ul>
+                </div>
+                <div class="schematic-box">
+                    <img src="https://github.com/Juansanher25/EjerciciosEGE/blob/main/Ejercicio%202%20EGE.jpg?raw=true" alt="Esquema Ejercicio 2 - Bomba">
+                    <div class="schematic-caption">Esquema Ejercicio 2 (Bomba)</div>
+                </div>
+            </div>
+            <textarea class="answer-space" placeholder="Espacio para el desarrollo y cálculos...&#10;&#10;Escribe tu respuesta paso a paso aquí."></textarea>
+        </section>
+
+        <!-- Ejercicio 3 -->
+        <section class="exercise" style="margin-bottom: 20px;">
+            <div class="exercise-header">
+                <div class="exercise-number">3</div>
+                <h2 class="exercise-title">Transferencia entre Tanques Presurizados</h2>
+            </div>
+            <div class="exercise-body">
+                <div class="problem-statement">
+                    <p>Se requiere bombear aceite hidráulico industrial continuo desde un tanque de almacenamiento inferior (A) hacia un tanque de proceso superior (B) a razón de <strong>0.015 m³/s</strong>. Ambos tanques están herméticamente sellados.</p>
+                    <p>El aire confinado sobre el aceite en el tanque A tiene una presión de <strong>120 kPa</strong> y la superficie del líquido se ubica a una cota de <strong>5.0 m</strong>. En el tanque B, la presión del aire atrapado es de <strong>250 kPa</strong> y el nivel del aceite está en una cota de <strong>18.0 m</strong>. Asuma que el área de los tanques es lo suficientemente grande. Las pérdidas de energía por fricción y válvulas en toda la tubería suman <strong>6.5 m</strong>.</p>
+                    <p>Determine la <strong>carga añadida (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>h</mi><mi>a</mi></msub></math>)</strong> por la bomba para lograr este trasiego.</p>
+
+                    <ul class="data-list">
+                        <li><i class="fa-solid fa-oil-can"></i> <strong>Gravedad Específica (sg):</strong> 0.88</li>
+                        <li><i class="fa-solid fa-cloud"></i> <strong>Presión aire A (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>p</mi><mi>A</mi></msub></math>):</strong> 120 kPa</li>
+                        <li><i class="fa-solid fa-cloud-showers-heavy"></i> <strong>Presión aire B (<math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>p</mi><mi>B</mi></msub></math>):</strong> 250 kPa</li>
+                    </ul>
+                </div>
+                <div class="schematic-box">
+                    <img src="https://github.com/Juansanher25/EjerciciosEGE/blob/main/Ejercicio%203%20EGE.png?raw=true" alt="Esquema Ejercicio 3 - Tanques">
+                    <div class="schematic-caption">Esquema Ejercicio 3 (Tanques)</div>
+                </div>
+            </div>
+            <textarea class="answer-space" placeholder="Espacio para el desarrollo y cálculos...&#10;&#10;Escribe tu respuesta paso a paso aquí."></textarea>
+        </section>
+
+    </div>
+
+</body>
+</html>
